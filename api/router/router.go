@@ -13,4 +13,6 @@ func SetupRouter(e *echo.Echo) {
     api.GET("/items/:id", handler.GetItem)
     api.PUT("/items/:id", handler.UpdateItem)
     api.DELETE("/items/:id", handler.DeleteItem)
+
+    api.GET("/hello", handler.Greeting)
 }
