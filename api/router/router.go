@@ -9,10 +9,10 @@ import (
 func SetupRouter(e *echo.Echo) {
     api := e.Group("/api")
 
-    api.POST("/items", handler.CreateItem)
-    api.GET("/items/:id", handler.GetItem)
-    api.PUT("/items/:id", handler.UpdateItem)
-    api.DELETE("/items/:id", handler.DeleteItem)
+    api.POST("/user", handler.CreateItem)
+    api.GET("/user/:id", handler.GetItem)
+    api.PUT("/user/:id", handler.UpdateItem)
+    api.DELETE("/user/:id", handler.DeleteItem)
 
     api.GET("/hello", handler.Greeting)
 }
