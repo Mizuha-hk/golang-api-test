@@ -6,7 +6,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     env_file:
       - .env
 
@@ -16,3 +17,8 @@ services:
       - "3306:3306"
     env_file:
       - .env
+    healthcheck:
+      test: "mysqladmin ping -h localhost"
+      interval: 5s
+      retries: 20
+      
