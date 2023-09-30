@@ -8,11 +8,11 @@ services:
     depends_on:
       - db
     env_file:
-      - ./config/.env
+      - .env
 
   db:
     image: mysql:8.0
     ports:
       - "3306:3306"
     env_file:
-      - ./config/.env
+      - .env

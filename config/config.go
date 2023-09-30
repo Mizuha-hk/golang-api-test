@@ -24,7 +24,7 @@ type DatabaseConfig struct {
 }
 
 func GetConfig() Config {
-    err := godotenv.Load("./config/.env")
+    err := godotenv.Load(".env")
     if err != nil {
         panic("Error loading .env file")
     }
@@ -34,7 +34,7 @@ func GetConfig() Config {
             Port: os.Getenv("SERVER_PORT"),
         },
         Database: DatabaseConfig{
-            DBUserName: os.Getenv("DB_USERNAME"),
+            DBUserName: os.Getenv("DB_USER"),
             DBPassword: os.Getenv("DB_PASSWORD"),
             DBHost: os.Getenv("DB_HOST"),
             DBPort: os.Getenv("DB_PORT"),
