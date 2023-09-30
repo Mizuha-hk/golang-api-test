@@ -1,5 +1,5 @@
 # ベースイメージを指定
-FROM golang:latest
+FROM golang:1.21.1
 
 # 作業ディレクトリを設定
 WORKDIR /golang-api

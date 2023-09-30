@@ -14,5 +14,10 @@ func SetupRouter(e *echo.Echo) {
     api.PUT("/user/:id", handler.UpdateItem)
     api.DELETE("/user/:id", handler.DeleteItem)
 
+	// Login
+	api.POST("/login", handler.Login)
+	// [TODO] Singup
+	
+
     api.GET("/hello", handler.Greeting)
 }

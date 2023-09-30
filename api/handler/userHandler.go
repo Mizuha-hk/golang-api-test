@@ -1,39 +1,47 @@
 package handler
 
 import (
+	"errors"
 	"golang-api/api/models"
 	"golang-api/db"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 // CreateItem creates a new user item
-// curl -X POST http://localhost:8080/api/user -H "Content-Type: application/json" -d '{"name": "John Doe"}'
+// curl -X POST http://localhost:8080/api/user -H "Content-Type: application/json" -d '{"name": "John Doe", "password": "password"}'
 func CreateItem(c echo.Context) error {
 	if db.DB == nil {
         return c.JSON(http.StatusInternalServerError, "Database not initialized")
     }
 
-	// Initialize a new User model
 	user := new(models.User)
 	
-	// Bind the received JSON data to the user model
 	if err := c.Bind(user); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
+	
+	if user.Name == "" || user.Password == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Name and password cannot be empty"})
+	}
 
-	// Perform validations or modifications on the user model if needed
-	if user.Name == "" {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Name cannot be empty"})
+	// Check if a user with the same username and password already exists
+	existingUser := &models.User{}
+	if err := db.DB.Where("name = ? AND password = ?", user.Name, user.Password).First(existingUser).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+	} else {
+		// If an existing user is found, return a conflict status code
+		return c.JSON(http.StatusConflict, map[string]string{"error": "A user with the given username and password already exists"})
 	}
 	
-	// Save the user model to the database
 	if err := db.DB.Create(user).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	
-	// Return the created user model as JSON
 	return c.JSON(http.StatusCreated, user)
 }
 
