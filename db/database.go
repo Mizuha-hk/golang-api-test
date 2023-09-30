@@ -19,6 +19,6 @@ func Connect(config config.DatabaseConfig) (*gorm.DB, error) {
 		config.DBPort,
 		config.DBName,
 	)
-
+	
 	return gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
